@@ -163,9 +163,15 @@ ready(() => {
   var controlLayers = L.control.layers(baseLayers).addTo(map);
 
 
-  var mapIcon = L.divIcon({className: 'leaflet-div-icon'});
+  var mapIcon = L.divIcon({className: 'mapmarker'});
   map.on('click', function(e){
     var marker = new L.marker(e.latlng, {icon: mapIcon}).addTo(map);
+
+    var popLocation= e.latlng;
+    var popup = L.popup()
+    .setLatLng(popLocation)
+    .setContent('<p class="marker">Enter<br>Coral<br>Bleaching<br>Data<br>Here</p>')
+    .openOn(map);
   });
 
 

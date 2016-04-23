@@ -1,5 +1,5 @@
 #day-label {
-    font: 400 16px Arial, sans-serif;
+    font: 600 20px Arial, sans-serif;
     left: 1em;
     bottom: 1em;
     color: rgb(200, 200, 200);
@@ -20,4 +20,22 @@
 
 #day-panel div {
     width: 10em;
+}
+
+.marker {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffc500;
+}
+
+.mapmarker {
+  width: 50px;
+  height: 50px;
+  background-color: #f00;
+  border-radius: 100%;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
 }
