@@ -2,6 +2,7 @@ import ready from 'domready'
 require('mapbox.js')
 require('mapbox.js/theme/style.css')
 require('initcss/lib/init.css')
+require('./time.css')
 import { MAPBOX_ACCESS_TOKEN } from './config.js'
 
 L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
@@ -32,7 +33,7 @@ ready(() => {
         [89.9999, 179.9999]
     ],
     attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
-}).addTo(map);  
+}).addTo(map);
 
   var landLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
     layer: "OSM_Land_Mask",
@@ -72,10 +73,28 @@ ready(() => {
     {
       'Sea Surface Temperature': seaSurfaceLayer,
       'Geography/Ocean Depth': geoBathyLayer
-    }, 
+    },
     {}
   ).addTo(map);
 
   // L.control.layers(layer s).addTo(map);
   L.control.scale().addTo(map);
+
+
+  // Slider values are in "days from present".
+  $("#day-slider").slider({
+      value: 0,
+      min: -4745, // 13 * 365 = 13 years back
+      max: 0,
+      step: 30, // month increment
+      slide: function(event, ui) {
+          // Add the slider value (effectively subracting) to today's
+          // date.
+          var newDay = new Date(today.getTime());
+          newDay.setUTCDate(today.getUTCDate() + ui.value);
+          day = newDay;
+          console.log(day)
+          // update();
+      }
+  });
 })

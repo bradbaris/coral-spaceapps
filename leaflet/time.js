@@ -146,19 +146,4 @@ $(function() {
 
     update();
 
-    // Slider values are in "days from present".
-    $("#day-slider").slider({
-        value: 0,
-        min: -4745, // 13 * 365 = 13 years back
-        max: 0,
-        step: 30, // month increment
-        slide: function(event, ui) {
-            // Add the slider value (effectively subracting) to today's
-            // date.
-            var newDay = new Date(today.getTime());
-            newDay.setUTCDate(today.getUTCDate() + ui.value);
-            day = newDay;
-            update();
-        }
-    });
 });
