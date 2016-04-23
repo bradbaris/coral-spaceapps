@@ -15,7 +15,7 @@ L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
 ready(() => {
   const map_container = document.querySelector('#map')
   const map = L.mapbox.map(map_container, geoBathyLayer)
-  map.setView([20.396123272467616, -158.35693359375], 7)
+  map.setView([7, -123.5], 6)
 
   var seaSurfaceLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
     layer: "GHRSST_L4_MUR_Sea_Surface_Temperature",
@@ -41,7 +41,7 @@ ready(() => {
     tileSize: 512,
     subdomains: "abc",
     zIndex: 2,
-    opacity: 0.5,
+    opacity: 1.0,
     noWrap: false, // shouldnt this make it wrap-around?
     continuousWorld: true,
     bounds: [
@@ -68,11 +68,12 @@ ready(() => {
     attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
 }).addTo(map);
 
-  L.control.layers({}, 
+  L.control.layers(
     {
       'Sea Surface Temperature': seaSurfaceLayer,
       'Geography/Ocean Depth': geoBathyLayer
-    }
+    }, 
+    {}
   ).addTo(map);
 
   // L.control.layers(layer s).addTo(map);
