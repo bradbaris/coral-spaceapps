@@ -2,6 +2,7 @@
 import data from '../data/coral_bleaching.csv';
 import papaparse from 'papaparse';
 import ready from 'domready';
+import _ from 'lodash';
 require('mapbox.js');
 require('mapbox.js/theme/style.css');
 require('initcss/lib/init.css');
@@ -16,33 +17,45 @@ const dayParameter = () => {
   return day.toISOString().split('T')[0];
 };
 
-ready(() => {
-  const map_container = document.querySelector('#map');
-  const map = L.mapbox.map(map_container, 'mapbox.streets');
-  map.setView([20.396123272467616, -158.35693359375], 7);
-});
+// ready(() => {
+//   const map_container = document.querySelector('#map');
+//   const map = L.mapbox.map(map_container, 'mapbox.streets');
+//   map.setView([20.396123272467616, -158.35693359375], 7);
+// });
 
-const genMarker = (lat, long, map) => {
-  const marker = L.marker([lat, long], {
-    icon: L.mapbox.marker.icon({
-      'marker-size': 'large',
-      'marker-symbol': 'bus',
-      'marker-color': '#fa0',
-    }),
-  });
-  marker.addTo(map);
-};
+
+const map_container = document.querySelector('#map')
+const map = L.mapbox.map(map_container, geoBathyLayer)
+map.setView([7, -123.5], 6);
+
+// const genMarker = (lat, long) => {
+//   const marker =
+//   return marker;
+//   // marker.addTo(mapEle);
+// };
 
 const completed = (results, file) => {
   console.log('file', file);
   console.log('results', results);
+  results.data.shift();
+  results.data.pop();
+  _.forEach(results.data, (result) => {
+    if (result[13] !== null && result[14] !== null) {
+      // console.log('result[13], result[14', result[13], result[14]);
+      const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+        icon: L.mapbox.marker.icon({
+          'marker-size': 'large',
+          'marker-symbol': 'bus',
+          'marker-color': '#fa0',
+        }),
+      });
+      console.log('leafMarker', leafMarker);
+      leafMarker.addTo(map);
+    }
+  });
 };
 
 papaparse.parse(data, { complete: completed });
-
-const map_container = document.querySelector('#map')
-const map = L.mapbox.map(map_container, geoBathyLayer)
-map.setView([7, -123.5], 6)
 
 const seaSurfaceLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
   layer: "GHRSST_L4_MUR_Sea_Surface_Temperature",
