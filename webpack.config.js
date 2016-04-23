@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
   app: path.resolve('./src/index.js'),
@@ -18,5 +20,9 @@ module.exports = {
       test: /\.js$/,
       loader: 'babel'
     }]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin(),
+    new OpenBrowserPlugin({url: 'http://localhost:8080/index.html'})
+  ]
 }
