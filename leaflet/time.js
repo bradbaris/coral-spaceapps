@@ -126,14 +126,14 @@ $(function() {
             time: dayParameter(),
             tileSize: 512,
             subdomains: "abc",
-            noWrap: false,
+            noWrap: false, // <-- hmm, make map wrap around? (hard to center on hawaii at edge)
             continuousWorld: true,
             // Prevent Leaflet from retrieving non-existent tiles on the
             // borders.
-            // bounds: [
-            //     [-89.9999, -179.9999],
-            //     [89.9999, 179.9999]
-            // ],
+            bounds: [
+                [-89.9999, -179.9999],
+                [89.9999, 179.9999]
+            ],
             attribution:
                 "<a href='https://wiki.earthdata.nasa.gov/display/GIBS'>" +
                 "NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;" +
@@ -151,7 +151,7 @@ $(function() {
         value: 0,
         min: -4745, // 13 * 365 = 13 years back
         max: 0,
-        step: 365, // year increment
+        step: 30, // month increment
         slide: function(event, ui) {
             // Add the slider value (effectively subracting) to today's
             // date.
