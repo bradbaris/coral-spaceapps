@@ -111,8 +111,8 @@ const geoBathyLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-ge
 L.control.layers({
   'Sea Surface Temperature': seaSurfaceLayer,
   'Geography/Ocean Depth': geoBathyLayer,
-  },
-  {}
+},
+{}
 ).addTo(map);
 
 // L.control.layers(layer s).addTo(map);
