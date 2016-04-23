@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
   app: path.resolve('./src/index.js'),
@@ -16,7 +18,26 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loader: 'babel'
-    }]
-  }
+      loader: 'babel',
+      exclude: /node_modules/
+    },
+    {
+      test: /\.json$/,
+      loader: 'json'
+    },
+    {
+      test: /\.css$/,
+      loader: 'style!css'
+    },{
+      test: /\.png/,
+      loader: 'file'
+    }
+  ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/template.html'
+    }),
+    new OpenBrowserPlugin({url: 'http://localhost:8080/webpack-dev-server'})
+  ]
 }
