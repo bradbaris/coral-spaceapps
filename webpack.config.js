@@ -18,11 +18,26 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loader: 'babel'
-    }]
+      loader: 'babel',
+      exclude: /node_modules/
+    },
+    {
+      test: /\.json$/,
+      loader: 'json'
+    },
+    {
+      test: /\.css$/,
+      loader: 'style!css'
+    },{
+      test: /\.png/,
+      loader: 'file'
+    }
+  ]
   },
   plugins: [
-    new HtmlWebpackPlugin(),
-    new OpenBrowserPlugin({url: 'http://localhost:8080/index.html'})
+    new HtmlWebpackPlugin({
+      template: 'src/template.html'
+    }),
+    new OpenBrowserPlugin({url: 'http://localhost:8080/webpack-dev-server'})
   ]
 }
