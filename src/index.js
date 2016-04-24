@@ -1,7 +1,7 @@
 import ready from 'domready'
 import data from '../data/coral_bleaching.csv'
 require('./style.css')
-require('initcss/lib/init.css')
+// require('initcss/lib/init.css')
 
 ready(() => {
 
