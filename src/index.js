@@ -3,12 +3,12 @@ require('mapbox.js')
 require('mapbox.js/theme/style.css')
 require('initcss/lib/init.css')
 require('./style.css')
+import papaparse from 'papaparse';
+import _ from 'lodash'
+import data from '../data/coral_bleaching.csv'
 import { MAPBOX_ACCESS_TOKEN } from './config.js'
 
 L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
-
-const MIN = -4745;
-
 
 ready(() => {
 
@@ -74,8 +74,66 @@ ready(() => {
     attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
 }).addTo(map);
 
+  var markMap = L.mapbox.tileLayer('mapbox.satellite');
+
+ const completed = (results, file) => {
+
+    results.data.shift();
+    results.data.pop();
+    var geoJSON = [];
+    _.forEach(results.data, (result) => {
+      var colorSchema = '#2f2000'; // default
+      var bleachPer = parseInt(result[17]);
+      // csonsole.log('results[17]',bleachPer);
+      if (bleachPer < 25 && bleachPer > 10) {
+        colorSchema = '#6D4B08';
+      } else if(bleachPer < 50 && bleachPer >= 25){
+          colorSchema = '#AA8439';
+      } else if (bleachPer < 75 && bleachPer >= 50) {
+        colorSchema = '#E7C889';
+      } else if (bleachPer <= 100 && bleachPer >= 75){
+        colorSchema = '#FFF3DA';
+      }
+      if (result[13] !== undefined && result[14] !== undefined) {
+        console.log('result[13], result[14', result[13], result[14]);
+        var leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+          icon: L.mapbox.marker.icon({
+            'marker-size': 'large',
+            'marker-symbol': 'bus',
+            'marker-color': colorSchema,
+          }),
+          properties: {
+            'liveCoral': result[15],
+            'paleCoral': result[16],
+            'bleachedCoral': result[17],
+            'paleBleachSum': result[18]
+          },
+        });
+        leafMarker.addTo(map);
+        // var temp = {
+        //   "type": "Feature",
+        //   "geometry": {
+        //     "type": "Point",
+        //     "coordinates": [result[13],result[14]],
+        //   },
+        //   "properties": {
+        //     "title": "Hawaii Island Point",
+        //     "description": result[13] + ' ' + result[14],
+        //     "marker-color": colorSchema,
+        //     "marker-size": "large",
+        //     "marker-symbol": "rocket",
+        //   }
+        // }
+        // geoJSON.push(temp);
+      }
+    });
+    markMap = L.layerGroup([geoJSON, markMap])
+    return markMap
+  };
+
   var baseLayers =
     {
+      'Marker': markMap,  
       'Sea Surface Temperature': seaSurfaceLayer,
       'Geography/Ocean Depth': geoBathyLayer
     };
@@ -166,24 +224,41 @@ ready(() => {
 
   update();
 
-    let slider_animation = MIN;
-    let DELAY = 50;
-    let foo = 0;
+  // Slider values are in "days from present".
+     $("#day-slider").slider({
+          value: 0,
+          min: -365, // 1 year back 
+          max: 0,
+          step: 7, // week increment
+          slide: function(event, ui) {
+              // Add the slider value (effectively subracting) to today's
+              // date.
+             var newDay = new Date(today.getTime());
+             newDay.setUTCDate(today.getUTCDate() + ui.value);
+             day = newDay;
+             update();
+         }
+     });
 
-    function step(timestamp) {
-      if(slider_animation < 0) {
-        if(foo++ % DELAY == 0) {
-          var newDay = new Date(today.getTime());
-          newDay.setUTCDate(today.getUTCDate() + slider_animation);
-          day = newDay;
-          console.log(day)
-          $('#day-slider').slider('value', slider_animation += 14);
-          update()
-        }
-        window.requestAnimationFrame(step);
-      }
-    }
+    // const MIN = -4745;
+    // let slider_animation = MIN;
+    // let DELAY = 50;
+    // let foo = 0;
 
-    window.requestAnimationFrame(step);
+    // function step(timestamp) {
+    //   if(slider_animation < 0) {
+    //     if(foo++ % DELAY == 0) {
+    //       var newDay = new Date(today.getTime());
+    //       newDay.setUTCDate(today.getUTCDate() + slider_animation);
+    //       day = newDay;
+    //       console.log(day)
+    //       $('#day-slider').slider('value', slider_animation += 14);
+    //       update()
+    //     }
+    //     window.requestAnimationFrame(step);
+    //   }
+    // }
+
+    // window.requestAnimationFrame(step);
 
 })

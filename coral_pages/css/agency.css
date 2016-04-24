@@ -11,9 +11,22 @@ body {
     color: #fed136
 }
 
+.md_text {
+    color: #000;
+    font-size: 24px;
+    font-weight: 400;
+}
+
 p {
-    font-size: 14px;
-    line-height: 1.75
+    font-size: 18px;
+    line-height: 2;
+    text-align: center;
+    padding: 0 20px;
+}
+
+p.right { 
+  text-align: right;
+  font-size: 16px;
 }
 
 p.large {
@@ -52,6 +65,18 @@ h6 {
 
 .img-centered {
     margin: 0 auto
+}
+
+.yellow {
+  color: #ffc500;
+}
+
+.bg-yellow {
+    background: #ffc500 url('../img/bg-yellow.jpg') no-repeat center / cover;
+}
+
+.bg-blue-coral {
+    background: #30558c url('../img/blue-coral.jpg') no-repeat top / cover;
 }
 
 .bg-light-gray {
@@ -270,7 +295,7 @@ header {
 
 header .intro-text {
     padding-top: 100px;
-    padding-bottom: 50px
+    padding-bottom: 50px;
 }
 
 header .intro-text .intro-lead-in {
@@ -292,7 +317,7 @@ header .intro-text .intro-heading {
 
 @media (min-width:768px) {
     header .intro-text {
-        padding-top: 300px;
+        padding-top: 200px;
         padding-bottom: 200px
     }
     header .intro-text .intro-lead-in {
@@ -322,8 +347,13 @@ section h2.section-heading {
     margin-bottom: 15px
 }
 
+.lg {
+  font-size: 84px;
+  color: linear-gradient(#fff, #ffc500);
+}
+
 section h3.section-subheading {
-    font-size: 16px;
+    font-size: 18px;
     font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-transform: none;
     font-style: italic;
