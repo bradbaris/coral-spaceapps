@@ -6,7 +6,7 @@ require('./style.css')
 import { MAPBOX_ACCESS_TOKEN } from './config.js'
 import papaparse from 'papaparse';
 import _ from 'lodash';
-import data from '../data/coral_bleaching.csv';
+import data from '../data/coral_bleaching.csv'
 L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
 
 ready(() => {
@@ -21,14 +21,14 @@ ready(() => {
   const map_container = document.querySelector('#map')
   const map = L.mapbox.map(map_container, 'mapbox.streets-satellite')
   map.setView([7, -123.5], 6)
-
+  var markMap = L.mapbox.tileLayer('mapbox.streets-satellite').addTo(map);
   var seaSurfaceLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
     layer: "GHRSST_L4_MUR_Sea_Surface_Temperature",
     tileMatrixSet: "EPSG4326_1km",
     time: dayParameter(),
     tileSize: 512,
     subdomains: "abc",
-    zIndex: 1,
+    zIndex: 4,
     opacity: 1,
     noWrap: false, // shouldnt this make it wrap-around?
     continuousWorld: true,
@@ -72,11 +72,41 @@ ready(() => {
     ],
     attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
 }).addTo(map);
+  markMap.on('load', () => {
+    papaparse.parse(data, { complete: completed });
+  })
+  const completed = (results, file) => {
+    console.log('file', file);
+    console.log('results', results);
+    results.data.shift();
+    results.data.pop();
+    _.forEach(results.data, (result) => {
+      if (result[13] !== undefined && result[14] !== undefined) {
+        // console.log('result[13], result[14', result[13], result[14]);
+        const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+          icon: L.mapbox.marker.icon({
+            'marker-size': 'large',
+            'marker-symbol': 'bus',
+            'marker-color': '#fa0',
+          }),
+          properties: {
+            'liveCoral': result[15],
+            'paleCoral': result[16],
+            'bleachedCoral': result[17],
+            'paleBleachSum': result[18]
+          },
+        });
+        console.log('leafMarker', leafMarker);
+        leafMarker.addTo(map);
+      }
+    });
+  };
 
   var baseLayers =
     {
-      'Geography/Ocean Depth': geoBathyLayer,
-      'Sea Surface Temperature': seaSurfaceLayer
+      'Marker': markMap,
+      'Sea Surface Temperature': seaSurfaceLayer,
+      'Geography/Ocean Depth': geoBathyLayer
     };
 
   var controlLayers = L.control.layers(baseLayers).addTo(map);
@@ -160,29 +190,9 @@ ready(() => {
               "View Source" +
               "</a>"
         });
-        return L.layerGroup([landLayer, layer])
+        return layer;
     };
-    const completed = (results, file) => {
-      console.log('file', file);
-      console.log('results', results);
-      results.data.shift();
-      results.data.pop();
-      _.forEach(results.data, (result) => {
-        if (result[13] !== undefined && result[14] !== undefined) {
-          // console.log('result[13], result[14', result[13], result[14]);
-          const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-            icon: L.mapbox.marker.icon({
-              'marker-size': 'large',
-              'marker-symbol': 'bus',
-              'marker-color': '#fa0',
-            }),
-          });
-          console.log('leafMarker', map);
-          leafMarker.addTo(map);
-        }
-      });
-  };
 
-    papaparse.parse(data, { complete: completed });
     update();
+
 })
