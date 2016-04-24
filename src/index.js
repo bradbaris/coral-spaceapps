@@ -4,6 +4,7 @@ require('mapbox.js/theme/style.css')
 require('initcss/lib/init.css')
 require('./style.css')
 import { MAPBOX_ACCESS_TOKEN } from './config.js'
+import moment from 'moment'
 
 L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
 
@@ -166,18 +167,20 @@ ready(() => {
 
   update();
 
-    let slider_animation = MIN;
+    // let slider_animation = MIN;
     let DELAY = 50;
-    let foo = 0;
+    let time = 0;
+    let start = moment('2015-04-01');
+    const end = moment();
 
     function step(timestamp) {
-      if(slider_animation < 0) {
-        if(foo++ % DELAY == 0) {
-          var newDay = new Date(today.getTime());
-          newDay.setUTCDate(today.getUTCDate() + slider_animation);
-          day = newDay;
-          console.log(day)
-          $('#day-slider').slider('value', slider_animation += 14);
+      if(start < end) {
+        if(time++ % DELAY == 0) {
+          day = start.toDate()
+          start.add(7, 'days')
+          const dayDiff = moment().diff(start, 'days');
+          console.log(dayDiff)
+          $('#day-slider').slider('value', dayDiff);
           update()
         }
         window.requestAnimationFrame(step);
