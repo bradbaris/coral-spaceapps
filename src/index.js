@@ -4,13 +4,10 @@ require('mapbox.js/theme/style.css')
 require('initcss/lib/init.css')
 require('./style.css')
 import coral from '../assets/large_coral.png'
-import papaparse from 'papaparse';
-import _ from 'lodash'
 import data from '../data/coral_bleaching.csv'
 import { MAPBOX_ACCESS_TOKEN } from './config.js'
 import papaparse from 'papaparse';
 import _ from 'lodash';
-import data from '../data/coral_bleaching.csv'
 L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
 
 ready(() => {
@@ -161,61 +158,6 @@ ready(() => {
   };
 
   var markMap = L.mapbox.tileLayer('mapbox.satellite');
-
- const completed = (results, file) => {
-
-    results.data.shift();
-    results.data.pop();
-    var geoJSON = [];
-    _.forEach(results.data, (result) => {
-      var colorSchema = '#2f2000'; // default
-      var bleachPer = parseInt(result[17]);
-      // csonsole.log('results[17]',bleachPer);
-      if (bleachPer < 25 && bleachPer > 10) {
-        colorSchema = '#6D4B08';
-      } else if(bleachPer < 50 && bleachPer >= 25){
-          colorSchema = '#AA8439';
-      } else if (bleachPer < 75 && bleachPer >= 50) {
-        colorSchema = '#E7C889';
-      } else if (bleachPer <= 100 && bleachPer >= 75){
-        colorSchema = '#FFF3DA';
-      }
-      if (result[13] !== undefined && result[14] !== undefined) {
-        console.log('result[13], result[14', result[13], result[14]);
-        var leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-          icon: L.mapbox.marker.icon({
-            'marker-size': 'large',
-            'marker-symbol': 'bus',
-            'marker-color': colorSchema,
-          }),
-          properties: {
-            'liveCoral': result[15],
-            'paleCoral': result[16],
-            'bleachedCoral': result[17],
-            'paleBleachSum': result[18]
-          },
-        });
-        leafMarker.addTo(map);
-        // var temp = {
-        //   "type": "Feature",
-        //   "geometry": {
-        //     "type": "Point",
-        //     "coordinates": [result[13],result[14]],
-        //   },
-        //   "properties": {
-        //     "title": "Hawaii Island Point",
-        //     "description": result[13] + ' ' + result[14],
-        //     "marker-color": colorSchema,
-        //     "marker-size": "large",
-        //     "marker-symbol": "rocket",
-        //   }
-        // }
-        // geoJSON.push(temp);
-      }
-    });
-    markMap = L.layerGroup([geoJSON, markMap])
-    return markMap
-  };
 
   var baseLayers =
     {
