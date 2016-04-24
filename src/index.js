@@ -1,6 +1,7 @@
 import ready from 'domready'
 import data from '../data/coral_bleaching.csv'
 require('./style.css')
+require('initcss/lib/init.css')
 
 ready(() => {
 
@@ -13,7 +14,24 @@ ready(() => {
 
   map.setView([20.622502259344817, -157.6153564453125], 8)
 
-  data.forEach(result => {
+  const first = createLayer('1')
+  const second = createLayer('2')
+  const third = createLayer('3')
+
+  const layers = L.layerGroup([first, second, third]).addTo(map)
+
+  const all_layers = [first, second, third]
+
+  function createLayer(Data_Source) {
+    const markers =
+      data
+        .filter(result => result.Data_Source === Data_Source)
+        .map(genMarker)
+
+    return L.featureGroup(markers)
+  }
+
+  function genMarker(result) {
     var colorSchema = '#2f2000'; // default
     const {
       Mean_Total_Live_Coral,
@@ -51,30 +69,43 @@ ready(() => {
         iconSize = 10
         markSize = 'small'
       }
-      // if (Data_Source === markerSet || markerSet === 'all') {
-        const icon = L.divIcon({
-          className: `marker size--${markSize} color--${colorSchema}`,
-          iconSize
-        });
+      const icon = L.divIcon({
+        className: `marker size--${markSize} color--${colorSchema}`,
+        iconSize
+      });
 
-        var leafMarker = L.marker([parseFloat(CentroidLat), parseFloat(CentroidLon)], {
-          icon,
-          properties: {
-            'liveCoral': result.Mean_Total_Live_Coral,
-            'paleCoral': result.Mean_Pale,
-            'bleachedCoral': result.Mean_Bleached,
-            'paleBleachSum': result.Pale_Bleached_Sum
-          }
-        })
-        leafMarker.bindPopup(`Coverage: ${Mean_Total_Live_Coral}% <br/> Bleached: <b> ${Mean_Bleached} %</b>`);
-        leafMarker.on('mouseover', function(e) {
-          this.openPopup();
-        });
-        leafMarker.on('mouseout', function(e) {
-          this.closePopup();
-        });
-        leafMarker.addTo(map)
+      var leafMarker = L.marker([parseFloat(CentroidLat), parseFloat(CentroidLon)], {
+        icon,
+        properties: {
+          'liveCoral': result.Mean_Total_Live_Coral,
+          'paleCoral': result.Mean_Pale,
+          'bleachedCoral': result.Mean_Bleached,
+          'paleBleachSum': result.Pale_Bleached_Sum
+        }
+      })
+      leafMarker.bindPopup(`Coverage: ${Mean_Total_Live_Coral}% <br/> Bleached: <b> ${Mean_Bleached} %</b>`);
+      leafMarker.on('mouseover', function(e) {
+        this.openPopup();
+      });
+      leafMarker.on('mouseout', function(e) {
+        this.closePopup();
+      });
+      return leafMarker
+    }
+  }
+
+  document.querySelector('.dataSet').addEventListener('change', function() {
+    layers.clearLayers()
+    all_layers.forEach((layer, i) => {
+      if(this.value === 'all') {
+        layers.addLayer(layer)
+        return
       }
-    // }
+      if(i != parseInt(this.value) - 1) {
+        layers.removeLayer(layer)
+      } else {
+        layers.addLayer(layer)
+      }
+    })
   })
 }); // end ready

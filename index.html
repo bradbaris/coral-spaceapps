@@ -25,15 +25,15 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css">
-        <link rel="stylesheet" href="lib/leaflet-0.7.3/leaflet.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="lib/leaflet-0.7.3/leaflet.css"/>
 
-        <script src="lib/jquery-1.11.2/jquery.min.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script src="lib/proj4js-2.3.3/proj4.js"></script>
-        <script src="lib/leaflet-0.7.3/leaflet.js"></script>
-        <script src="lib/proj4leaflet-0.7.0/proj4leaflet.js"></script>
-        <script src="lib/map1.js"></script>
+    <script src="lib/jquery-1.11.2/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="lib/proj4js-2.3.3/proj4.js"></script>
+    <script src="lib/leaflet-0.7.3/leaflet.js"></script>
+    <script src="lib/proj4leaflet-0.7.0/proj4leaflet.js"></script>
+    <script src="lib/map1.js"></script>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -171,7 +171,16 @@
     <section id="DataMap">
         <div class="container">
             <div class="row">
-                <div id="data-map" style="width: 100%; height: 800px">
+                <div id="data-map" style="width: 100%; height: 600px">
+                  <div class="selector">
+                    <label for="">Filter by Data Source</label>
+                    <select class="dataSet" name="dataSet">
+                      <option value="all">all</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                    </select>
+                  </div>
                 </div>
             </div>
         </div>
@@ -210,8 +219,8 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/agency.js"></script>
-    <!-- <script src="http://localhost:8080/bundle.js"></script> -->
-    <script src="dist/bundle.js"></script>
+    <script src="http://localhost:8080/bundle.js"></script>
+    <!-- <script src="dist/bundle.js"></script> -->
 
 
 </body>
