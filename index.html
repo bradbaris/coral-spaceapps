@@ -25,12 +25,11 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
 
-    
-        <link rel="stylesheet" href="lib/jquery-ui-1.10.4/jquery-ui.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css">
         <link rel="stylesheet" href="lib/leaflet-0.7.3/leaflet.css"/>
 
         <script src="lib/jquery-1.11.2/jquery.min.js"></script>
-        <script src="lib/jquery-ui-1.10.4/jquery-ui.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="lib/proj4js-2.3.3/proj4.js"></script>
         <script src="lib/leaflet-0.7.3/leaflet.js"></script>
         <script src="lib/proj4leaflet-0.7.0/proj4leaflet.js"></script>
@@ -44,9 +43,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript">
-      setTimeout( function() {
-        $('html, body').animate({ scrollTop: $('#video1').offset().top }, 'slow');
-      }, 7000);
+      // setTimeout( function() {
+      //   $('html, body').animate({ scrollTop: $('#video1').offset().top }, 'slow');
+      // }, 7000);
     </script>
     <style>
       #sstmap {
@@ -109,7 +108,7 @@
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </header>
 
     <!-- Kumulipo Video Section -->
@@ -118,7 +117,7 @@
           <div class="embed-responsive embed-responsive-16by9">
             <iframe height="500" src="http://www.youtube.com/embed/gDw24EvTXxY?autoplay=1" frameborder="0" allowfullscreen></iframe>
 
-          </div>    
+          </div>
         </div>
     </section>
 
@@ -128,14 +127,14 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                   <h2 class="section-heading">Welcome to Coral Beat</h2>
-                </div> 
+                </div>
                 <div class="col-lg-12 text">
                   <p class="text">Our focus is on Hawaii and her coral reefs. The value of these reefs to the people of Hawaii for physical sustenance and deep cultural connections as well as a draw for the tourism economy cannot be overestimated. We offer this resource for local residents, visitors, and the science community to monitor the short and long-term effects of bleaching.</p>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- SST MapSection -->
     <section id="SeaSurfaceTemp">
         <div class="container">
@@ -156,15 +155,15 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Noah Tow Video Section -->
     <section id="video2" style="background-color: #132e59; padding:0;margin:0;">
         <div class="container">
           <div class="embed-responsive embed-responsive-16by9">
             <video id="videohome" width="100%" preload="auto" autoplay="true" loop="loop" muted="" volume="0">
                 <source src="./img/bleaching-cut-2.mp4" type="video/mp4" />
-            </video> 
-          </div>    
+            </video>
+          </div>
         </div>
     </section>
 
@@ -172,23 +171,11 @@
     <section id="DataMap">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Data Marker Map goes here</h2>
-                </div>
-                <div class="col-lg-12 text">
-                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    <br>
-                    . </p>
+                <div id="data-map" style="width: 100%; height: 800px">
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Youtube Video -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
@@ -200,6 +187,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/agency.js"></script>
+    <!-- <script src="http://localhost:8080/bundle.js"></script> -->
+    <script src="dist/bundle.js"></script>
+
 
 </body>
 </html>

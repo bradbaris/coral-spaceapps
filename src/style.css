@@ -58,3 +58,40 @@
   right: 10px;
   z-index: 10000;
 }
+
+.marker {
+  border-radius: 50%;
+  border: 1px solid #CCC;
+}
+
+.marker.size--small {
+  width: 10px;
+  height: 10px;
+}
+
+.marker.size--medium {
+  width: 15px;
+  height: 15px;
+}
+
+.marker.size--large {
+  width: 20px;
+  height: 20px;
+}
+
+.marker.color--white {
+  background: #FFF3DA;
+  z-index: 4;
+}
+.marker.color--medium {
+  background: #E7C889;
+  z-index: 3;
+}
+.marker.color--dark {
+  background: #AA8439;
+  z-index: 2;
+}
+.marker.color--darkest {
+  background: #6D4B08;
+  z-index: 1;
+}
