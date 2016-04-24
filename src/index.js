@@ -74,18 +74,30 @@ ready(() => {
     ],
     attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
 }).addTo(map);
+
+  var loaded = false;
   markMap.on('load', () => {
-    papaparse.parse(data, { complete: completed });
-  })
-  const completed = (results, file) => {
-    console.log('file', file);
-    console.log('results', results);
-    results.data.shift();
-    results.data.pop();
-    var geoJSON = [];
-    var icon = {
-      iconUrl: '../assets/large_coral.png'
+    if (loaded) {
+      return
     }
+    papaparse.parse(data, { complete: completed });
+    loaded = true;
+  })
+  var coralData;
+  const completed = (results, file) => {
+    if (!coralData) {
+      coralData = results;
+    }
+    // digesting previous layers for marker icons and replacing them.
+    map.eachLayer((layer) => {
+      if(layer._icon){
+        console.log(layer);
+        map.removeLayer(layer)
+      }
+    });
+    //console.log('file', file);
+    //console.log('results', results);
+    results.data.shift();
     // accending sort algorthm;
     function selectionSort(arr){
       var minIdx, temp,
@@ -109,6 +121,8 @@ ready(() => {
     _.forEach(results.data, (result, itt) => {
       var colorSchema = '#2f2000'; // default
       var bleachPer = parseInt(result[18]);
+      var markerSet; // will be set using jquery;
+      markerSet = $('.dataSet').val();
       // bleachPer = itt * 100/53;
       // csonsole.log('results[17]',bleachPer);
       if (bleachPer < 25 && bleachPer > 10) {
@@ -130,32 +144,38 @@ ready(() => {
           markSize = 'small';
         }
         //console.log('result[13], result[14', result[13], result[14]);
-        var leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-          icon: L.mapbox.marker.icon({
-            'marker-size': markSize,
-            'marker-color': colorSchema,
-          }),
-          properties: {
-            'liveCoral': result[15],
-            'paleCoral': result[16],
-            'bleachedCoral': result[17],
-            'paleBleachSum': result[18]
-          },
-          zIndexOffset: 1,
-          riseOnHover: true,
-        })
-        console.log('leafMarker', leafMarker);
-        leafMarker.bindPopup('liveCoral:' + result[15] + '\n' + 'paleCoral:' + result[16] + '\n' + 'bleachedCoral:' + result[17]  + '\n' + 'paleBleachSum:' + result[18]);
-        leafMarker.on('mouseover', function(e) {
-          this.openPopup();
-        });
-        leafMarker.on('mouseout', function(e) {
-          this.closePopup();
-        });
-        map.addLayer(leafMarker);
+        if (result[19] === markerSet || markerSet === 'all') {
+          var leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+            icon: L.mapbox.marker.icon({
+              'marker-size': markSize,
+              'marker-color': colorSchema,
+            }),
+            properties: {
+              'liveCoral': result[15],
+              'paleCoral': result[16],
+              'bleachedCoral': result[17],
+              'paleBleachSum': result[18]
+            },
+            zIndexOffset: 1,
+            riseOnHover: true,
+          })
+          //console.log('leafMarker', leafMarker);
+          leafMarker.bindPopup('Coverage: '  + parseInt(result[15]) + '%<br/>' + 'Bleached: <b>' + parseInt(result[18]) + '%</b>');
+          leafMarker.on('mouseover', function(e) {
+            this.openPopup();
+          });
+          leafMarker.on('mouseout', function(e) {
+            this.closePopup();
+          });
+          map.addLayer(leafMarker);
+        }
       }
     });
   };
+  $('.dataSet').change(() => {
+    // console.log('coralData',coralData);
+    completed(coralData, "");
+  })
 
   var markMap = L.mapbox.tileLayer('mapbox.satellite');
 
