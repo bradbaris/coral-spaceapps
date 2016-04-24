@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hawaii Coral</title>
+    <title>Coral Beat</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,19 @@
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
+
+    
+        <link rel="stylesheet" href="lib/jquery-ui-1.10.4/jquery-ui.min.css"/>
+        <link rel="stylesheet" href="lib/leaflet-0.7.3/leaflet.css"/>
+
+        <script src="lib/jquery-1.11.2/jquery.min.js"></script>
+        <script src="lib/jquery-ui-1.10.4/jquery-ui.min.js"></script>
+        <script src="lib/proj4js-2.3.3/proj4.js"></script>
+        <script src="lib/leaflet-0.7.3/leaflet.js"></script>
+        <script src="lib/proj4leaflet-0.7.0/proj4leaflet.js"></script>
+        <script src="lib/map1.js"></script>
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -35,6 +48,11 @@
         $('html, body').animate({ scrollTop: $('#video1').offset().top }, 'slow');
       }, 7000);
     </script>
+    <style>
+      #sstmap {
+      height: 500px;
+      }
+      </style>
 </head>
 
 <body id="page-top" class="index">
@@ -50,7 +68,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Hawaii Coral</a>
+                <a class="navbar-brand page-scroll" href="#page-top">Coral Beat</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -98,9 +116,8 @@
     <section id="video1" style="background-color: #132e59; padding:0;margin:0;">
         <div class="container">
           <div class="embed-responsive embed-responsive-16by9">
-            <video id="videohome" width="100%" preload="auto" autoplay="true" loop="loop" muted="" volume="0">
-                <source src="./img/bleaching-cut-2.mp4" type="video/mp4" />
-            </video> 
+            <iframe height="500" src="http://www.youtube.com/embed/gDw24EvTXxY?autoplay=1" frameborder="0" allowfullscreen></iframe>
+
           </div>    
         </div>
     </section>
@@ -110,26 +127,31 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">(Intro to the SST map)</h2>
+                  <h2 class="section-heading">Welcome to Coral Beat</h2>
                 </div> 
                 <div class="col-lg-12 text">
-                    <p class="text">The scope of the current app is a local focus on Hawaii and her coral reefs. The value of these reefs to the people of Hawaii for physical sustenance and deep cultural connections as well as a draw for the tourism economy cannot be overestimated. This app can serve as a resource for local residents, visitors, and the science community to monitor the short and long-term effects of bleaching.</p>
+                  <p class="text">Our focus is on Hawaii and her coral reefs. The value of these reefs to the people of Hawaii for physical sustenance and deep cultural connections as well as a draw for the tourism economy cannot be overestimated. We offer this resource for local residents, visitors, and the science community to monitor the short and long-term effects of bleaching.</p>
                 </div>
             </div>
         </div>
     </section>
-
+    
     <!-- SST MapSection -->
     <section id="SeaSurfaceTemp">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">SeaSurfaceTemp Map goes here</h2>
+                    <h2 class="section-heading">2015 Sea Surface Temperature</h2>
                 </div>
                 <div class="col-lg-12 text">
-                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p class="text">2015 was <i>hot!<i> The average global temperature was the highest ever recorded.  Cyclical climactic ocean events, such as El Nino, brought warm waters further north and stressed reefs worldwide. This interactive map of 2015 sea surface temperature shows the <i>heart-beat<i> of seasonal change.</p>
                     <br>
-                    . </p>
+                    <div id="sstmap" style="height=500px">
+                    </div>
+                    <div id="day-panel">
+                      <div id="day-label"></div>
+                      <div id="day-slider"></div>
+                    </div>
                 </div>
             </div>
         </div>
