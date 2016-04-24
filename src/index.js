@@ -80,26 +80,59 @@ ready(() => {
     console.log('results', results);
     results.data.shift();
     results.data.pop();
+    var geoJSON = [];
     _.forEach(results.data, (result) => {
+      var colorSchema = '#2f2000'; // default
+      var bleachPer = parseInt(result[17]);
+      // csonsole.log('results[17]',bleachPer);
+      if (bleachPer < 25 && bleachPer > 10) {
+        colorSchema = '#6D4B08';
+      } else if(bleachPer < 50 && bleachPer >= 25){
+          colorSchema = '#AA8439';
+      } else if (bleachPer < 75 && bleachPer >= 50) {
+        colorSchema = '#E7C889';
+      } else if (bleachPer <= 100 && bleachPer >= 75){
+        colorSchema = '#FFF3DA';
+      }
       if (result[13] !== undefined && result[14] !== undefined) {
         // console.log('result[13], result[14', result[13], result[14]);
-        const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-          icon: L.mapbox.marker.icon({
-            'marker-size': 'large',
-            'marker-symbol': 'bus',
-            'marker-color': '#fa0',
-          }),
-          properties: {
-            'liveCoral': result[15],
-            'paleCoral': result[16],
-            'bleachedCoral': result[17],
-            'paleBleachSum': result[18]
+        // const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+        //   icon: L.mapbox.marker.icon({
+        //     'marker-size': 'large',
+        //     'marker-symbol': 'bus',
+        //     'marker-color': colorSchema,
+        //   }),
+        //   properties: {
+        //     'liveCoral': result[15],
+        //     'paleCoral': result[16],
+        //     'bleachedCoral': result[17],
+        //     'paleBleachSum': result[18]
+        //   },
+        // });
+        // console.log('leafMarker', leafMarker);
+        // leafMarker.addTo(map);
+        var temp = {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [result[13],result[14]],
           },
-        });
-        console.log('leafMarker', leafMarker);
-        leafMarker.addTo(map);
+          "properties": {
+            "title": "Hawaii Island Point",
+            "description": result[13] + ' ' + result[14],
+            "marker-color": colorSchema,
+            "marker-size": "large",
+            "marker-symbol": "rocket",
+          }
+        }
+        geoJSON.push(temp);
       }
     });
+    console.log('geoJSON',geoJSON);
+    //var markerLayer =  L.mapbox.featureLayer().addTo(map)
+    var layer = L.mapbox.featureLayer().addTo(map);
+    console.log('markerLayer',layer, map);
+    layer.setGeoJSON(geoJSON)
   };
 
   var baseLayers =
