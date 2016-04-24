@@ -38,4 +38,11 @@
 
 .leaflet-popup-content-wrapper {
   border-radius: 8px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.popup {
+  font-size: 16px;
+  color: #ffc500;
 }
