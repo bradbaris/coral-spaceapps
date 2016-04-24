@@ -46,3 +46,15 @@
   font-size: 16px;
   color: #ffc500;
 }
+.ui-control {
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:1000;
+}
+.selector{
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  z-index: 10000;
+}
