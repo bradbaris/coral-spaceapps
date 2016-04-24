@@ -124,10 +124,18 @@ ready(() => {
         colorSchema = '#FFF3DA';
       }
       if (result[13] !== undefined && result[14] !== undefined) {
+        var markSize;
+        if (parseInt(result[15]) > 66) {
+          markSize = 'large';
+        } else if (parseInt(result[15]) <= 66 && parseInt(result[15]) > 33) {
+          markSize = 'medium';
+        } else {
+          markSize = 'small';
+        }
         //console.log('result[13], result[14', result[13], result[14]);
         var leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
           icon: L.mapbox.marker.icon({
-            'marker-size': 'large',
+            'marker-size': markSize,
             'marker-color': colorSchema,
           }),
           properties: {
@@ -140,13 +148,13 @@ ready(() => {
           riseOnHover: true,
         })
         console.log('leafMarker', leafMarker);
+        leafMarker.bindPopup('liveCoral:' + result[15] + '\n' + 'paleCoral:' + result[16] + '\n' + 'bleachedCoral:' + result[17]  + '\n' + 'paleBleachSum:' + result[18]);
         leafMarker.on('mouseover', function(e) {
           this.openPopup();
         });
         leafMarker.on('mouseout', function(e) {
           this.closePopup();
         });
-        leafMarker.bindPopup('liveCoral:' + result[15] + '\n' + 'paleCoral:' + result[16] + '\n' + 'bleachedCoral:' + result[17]  + '\n' + 'paleBleachSum:' + result[18]);
         map.addLayer(leafMarker);
       }
     });
