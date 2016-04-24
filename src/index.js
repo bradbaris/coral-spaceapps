@@ -1,65 +1,12 @@
-/* global L, $ */
-import data from '../data/coral_bleaching.csv';
+import ready from 'domready'
+require('mapbox.js')
+require('mapbox.js/theme/style.css')
+require('initcss/lib/init.css')
+require('./style.css')
+import { MAPBOX_ACCESS_TOKEN } from './config.js'
 import papaparse from 'papaparse';
-import ready from 'domready';
 import _ from 'lodash';
-require('mapbox.js');
-require('mapbox.js/theme/style.css');
-require('initcss/lib/init.css');
-require('./time.css');
-import { MAPBOX_ACCESS_TOKEN } from './config.js';
-
-L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN;
-
-const today = new Date(new Date() - 1728e5);
-let day = new Date(today.getTime());
-const dayParameter = () => {
-  return day.toISOString().split('T')[0];
-};
-
-// ready(() => {
-//   const map_container = document.querySelector('#map');
-//   const map = L.mapbox.map(map_container, 'mapbox.streets');
-//   map.setView([20.396123272467616, -158.35693359375], 7);
-// });
-
-
-const map_container = document.querySelector('#map')
-const map = L.mapbox.map(map_container, 'mapbox.satellite')
-map.setView([19, -155], 6);
-
-// const genMarker = (lat, long) => {
-//   const marker =
-//   return marker;
-//   // marker.addTo(mapEle);
-// };
-
-const completed = (results, file) => {
-  console.log('file', file);
-  console.log('results', results);
-  results.data.shift();
-  results.data.pop();
-  _.forEach(results.data, (result) => {
-    if (result[13] !== null && result[14] !== null) {
-      // console.log('result[13], result[14', result[13], result[14]);
-      const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'large',
-          'marker-symbol': 'bus',
-          'marker-color': '#fa0',
-        }),
-      });
-      console.log('leafMarker', leafMarker);
-      leafMarker.addTo(map);
-    }
-  });
-};
-
-const markbox = L.mapbox.tileLayer('mapbox.satellite', {
-  zIndex: 5,
-  opacity: 1,
-});
-
+import data from '../data/coral_bleaching.csv';
 L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
 
 ready(() => {
@@ -92,74 +39,44 @@ ready(() => {
     attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
 }).addTo(map);
 
-const seaSurfaceLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
-  layer: "GHRSST_L4_MUR_Sea_Surface_Temperature",
-  tileMatrixSet: "EPSG4326_1km",
-  time: dayParameter(),
-  tileSize: 512,
-  subdomains: "abc",
-  zIndex: 2,
-  opacity: 1,
-  noWrap: false, // shouldnt this make it wrap-around?
-  continuousWorld: true,
-  bounds: [
-      [-89.9999, -179.9999],
-      [89.9999, 179.9999]
-  ],
-  attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
+  var landLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
+    layer: "OSM_Land_Mask",
+    tileMatrixSet: "EPSG4326_250m",
+    time: dayParameter(),
+    tileSize: 512,
+    subdomains: "abc",
+    zIndex: 2,
+    opacity: 1.0,
+    noWrap: false, // shouldnt this make it wrap-around?
+    continuousWorld: true,
+    bounds: [
+        [-89.9999, -179.9999],
+        [89.9999, 179.9999]
+    ],
+    attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
 }).addTo(map);
 
-const landLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
-  layer: "OSM_Land_Mask",
-  tileMatrixSet: "EPSG4326_250m",
-  time: dayParameter(),
-  tileSize: 512,
-  subdomains: "abc",
-  zIndex: 2,
-  opacity: 1.0,
-  noWrap: false, // shouldnt this make it wrap-around?
-  continuousWorld: true,
-  bounds: [
-      [-89.9999, -179.9999],
-      [89.9999, 179.9999]
-  ],
-  attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
-}).addTo(map);
-
-  const geoBathyLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpeg', {
+  var geoBathyLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpeg', {
     layer: "BlueMarble_ShadedRelief_Bathymetry",
     tileMatrixSet: "EPSG4326_500m",
     time: dayParameter(),
-    tileSize: 428,
-    subdomains: 'abc',
+    tileSize: 512,
+    subdomains: "abc",
     zIndex: 3,
     opacity: 1,
     noWrap: false, // shouldnt this make it wrap-around?
     continuousWorld: true,
-    detectRetina: true,
     bounds: [
-      [-90, -180],
-      [90, 180],
+        [-89.9999, -179.9999],
+        [89.9999, 179.9999]
     ],
-    attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>',
-  }).addTo(map);
-
-papaparse.parse(data, { complete: completed });
-L.control.layers({
-  'Marker': markbox,
-  'Sea Surface Temperature': seaSurfaceLayer,
-  'Geography/Ocean Depth': geoBathyLayer,
-},
-{}
-).addTo(map);
-
-// L.control.layers(layer s).addTo(map);
-L.control.scale().addTo(map);
+    attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
+}).addTo(map);
 
   var baseLayers =
     {
-      'Sea Surface Temperature': seaSurfaceLayer,
-      'Geography/Ocean Depth': geoBathyLayer
+      'Geography/Ocean Depth': geoBathyLayer,
+      'Sea Surface Temperature': seaSurfaceLayer
     };
 
   var controlLayers = L.control.layers(baseLayers).addTo(map);
@@ -245,7 +162,27 @@ L.control.scale().addTo(map);
         });
         return L.layerGroup([landLayer, layer])
     };
+    const completed = (results, file) => {
+      console.log('file', file);
+      console.log('results', results);
+      results.data.shift();
+      results.data.pop();
+      _.forEach(results.data, (result) => {
+        if (result[13] !== undefined && result[14] !== undefined) {
+          // console.log('result[13], result[14', result[13], result[14]);
+          const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+            icon: L.mapbox.marker.icon({
+              'marker-size': 'large',
+              'marker-symbol': 'bus',
+              'marker-color': '#fa0',
+            }),
+          });
+          console.log('leafMarker', map);
+          leafMarker.addTo(map);
+        }
+      });
+  };
 
+    papaparse.parse(data, { complete: completed });
     update();
-
 })
