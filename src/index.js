@@ -89,9 +89,30 @@ ready(() => {
     var icon = {
       iconUrl: '../assets/large_coral.png'
     }
-    _.forEach(results.data, (result) => {
+    // accending sort algorthm;
+    function selectionSort(arr){
+      var minIdx, temp,
+          len = arr.length;
+      for(var i = 0; i < len; i++){
+        minIdx = i;
+        for(var  j = i+1; j<len; j++){
+           if(arr[j][18]<arr[minIdx][18]){
+              minIdx = j;
+           }
+        }
+        temp = arr[i];
+        arr[i] = arr[minIdx];
+        arr[minIdx] = temp;
+      }
+      return arr;
+    }
+
+    selectionSort(results.data);
+    // console.log('results',results);
+    _.forEach(results.data, (result, itt) => {
       var colorSchema = '#2f2000'; // default
-      var bleachPer = parseInt(result[17]);
+      var bleachPer = parseInt(result[18]);
+      // bleachPer = itt * 100/53;
       // csonsole.log('results[17]',bleachPer);
       if (bleachPer < 25 && bleachPer > 10) {
         colorSchema = '#6D4B08';
@@ -103,13 +124,11 @@ ready(() => {
         colorSchema = '#FFF3DA';
       }
       if (result[13] !== undefined && result[14] !== undefined) {
-        console.log('result[13], result[14', result[13], result[14]);
+        //console.log('result[13], result[14', result[13], result[14]);
         var leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-          icon: L.icon({
-            iconUrl: coral,
-            iconSize: [25, 25],
-	          iconAnchor: [5, 0],
-	          popupAnchor: [-5, 0],
+          icon: L.mapbox.marker.icon({
+            'marker-size': 'large',
+            'marker-color': colorSchema,
           }),
           properties: {
             'liveCoral': result[15],
@@ -117,11 +136,18 @@ ready(() => {
             'bleachedCoral': result[17],
             'paleBleachSum': result[18]
           },
+          zIndexOffset: 1,
+          riseOnHover: true,
         })
         console.log('leafMarker', leafMarker);
+        leafMarker.on('mouseover', function(e) {
+          this.openPopup();
+        });
+        leafMarker.on('mouseout', function(e) {
+          this.closePopup();
+        });
         leafMarker.bindPopup('liveCoral:' + result[15] + '\n' + 'paleCoral:' + result[16] + '\n' + 'bleachedCoral:' + result[17]  + '\n' + 'paleBleachSum:' + result[18]);
-        leafMarker.addTo(map);
-
+        map.addLayer(leafMarker);
       }
     });
   };
