@@ -25,8 +25,8 @@ const dayParameter = () => {
 
 
 const map_container = document.querySelector('#map')
-const map = L.mapbox.map(map_container, geoBathyLayer)
-map.setView([7, -123.5], 6);
+const map = L.mapbox.map(map_container, 'mapbox.satellite')
+map.setView([19, -155], 6);
 
 // const genMarker = (lat, long) => {
 //   const marker =
@@ -55,7 +55,10 @@ const completed = (results, file) => {
   });
 };
 
-papaparse.parse(data, { complete: completed });
+const markbox = L.mapbox.tileLayer('mapbox.satellite', {
+  zIndex: 5,
+  opacity: 1,
+}).addTo(map);
 
 const seaSurfaceLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
   layer: "GHRSST_L4_MUR_Sea_Surface_Temperature",
@@ -63,7 +66,7 @@ const seaSurfaceLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-
   time: dayParameter(),
   tileSize: 512,
   subdomains: "abc",
-  zIndex: 1,
+  zIndex: 2,
   opacity: 1,
   noWrap: false, // shouldnt this make it wrap-around?
   continuousWorld: true,
@@ -91,24 +94,28 @@ const landLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{l
   attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
 }).addTo(map);
 
-const geoBathyLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpeg', {
-  layer: "BlueMarble_ShadedRelief_Bathymetry",
-  tileMatrixSet: "EPSG4326_500m",
-  time: dayParameter(),
-  tileSize: 512,
-  subdomains: 'abc',
-  zIndex: 3,
-  opacity: 1,
-  noWrap: false, // shouldnt this make it wrap-around?
-  continuousWorld: true,
-  bounds: [
-    [-89.9999, -179.9999],
-    [89.9999, 179.9999],
-  ],
-  attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>',
-}).addTo(map);
+  const geoBathyLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpeg', {
+    layer: "BlueMarble_ShadedRelief_Bathymetry",
+    tileMatrixSet: "EPSG4326_500m",
+    time: dayParameter(),
+    tileSize: 428,
+    subdomains: 'abc',
+    zIndex: 3,
+    opacity: 1,
+    noWrap: false, // shouldnt this make it wrap-around?
+    continuousWorld: true,
+    detectRetina: true,
+    bounds: [
+      [-90, -180],
+      [90, 180],
+    ],
+    attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>',
+  }).addTo(map);
 
+
+papaparse.parse(data, { complete: completed });
 L.control.layers({
+  'Marker': markbox,
   'Sea Surface Temperature': seaSurfaceLayer,
   'Geography/Ocean Depth': geoBathyLayer,
 },
