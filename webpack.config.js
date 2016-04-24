@@ -29,9 +29,12 @@ module.exports = {
       test: /\.css$/,
       loader: 'style!css'
     },{
-      test: /\.png/,
+      test: /\.png$/,
       loader: 'file'
-    }
+    },{
+      test: /\.csv$/,
+      loader: 'raw',
+    },
   ]
   },
   plugins: [
