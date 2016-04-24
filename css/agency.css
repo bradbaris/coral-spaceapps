@@ -305,6 +305,11 @@ header.sea {
   color: #ffc500;
 }
 
+header.vision{
+    background-image: url(../img/bg-vision.jpg);
+    color: #ffc500;
+}
+
 .overlay {
   background: #5b3737;
   opacity: .5;
