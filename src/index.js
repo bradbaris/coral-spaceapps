@@ -99,44 +99,44 @@ ready(() => {
         colorSchema = '#FFF3DA';
       }
       if (result[13] !== undefined && result[14] !== undefined) {
-        // console.log('result[13], result[14', result[13], result[14]);
-        // const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-        //   icon: L.mapbox.marker.icon({
-        //     'marker-size': 'large',
-        //     'marker-symbol': 'bus',
-        //     'marker-color': colorSchema,
-        //   }),
-        //   properties: {
-        //     'liveCoral': result[15],
-        //     'paleCoral': result[16],
-        //     'bleachedCoral': result[17],
-        //     'paleBleachSum': result[18]
-        //   },
-        // });
-        // console.log('leafMarker', leafMarker);
-        // leafMarker.addTo(map);
-        var temp = {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [result[13],result[14]],
+        console.log('result[13], result[14', result[13], result[14]);
+        const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+          icon: L.mapbox.marker.icon({
+            'marker-size': 'large',
+            'marker-symbol': 'bus',
+            'marker-color': colorSchema,
+          }),
+          properties: {
+            'liveCoral': result[15],
+            'paleCoral': result[16],
+            'bleachedCoral': result[17],
+            'paleBleachSum': result[18]
           },
-          "properties": {
-            "title": "Hawaii Island Point",
-            "description": result[13] + ' ' + result[14],
-            "marker-color": colorSchema,
-            "marker-size": "large",
-            "marker-symbol": "rocket",
-          }
-        }
-        geoJSON.push(temp);
+        });
+        console.log('leafMarker', leafMarker);
+        leafMarker.addTo(map);
+        // var temp = {
+        //   "type": "Feature",
+        //   "geometry": {
+        //     "type": "Point",
+        //     "coordinates": [result[13],result[14]],
+        //   },
+        //   "properties": {
+        //     "title": "Hawaii Island Point",
+        //     "description": result[13] + ' ' + result[14],
+        //     "marker-color": colorSchema,
+        //     "marker-size": "large",
+        //     "marker-symbol": "rocket",
+        //   }
+        // }
+        // geoJSON.push(temp);
       }
     });
-    console.log('geoJSON',geoJSON);
-    //var markerLayer =  L.mapbox.featureLayer().addTo(map)
-    var layer = L.mapbox.featureLayer().addTo(map);
-    console.log('markerLayer',layer, map);
-    layer.setGeoJSON(geoJSON)
+    // console.log('geoJSON',geoJSON);
+    // //var markerLayer =  L.mapbox.featureLayer().addTo(map)
+    // var layer = L.mapbox.featureLayer().addTo(map);
+    // console.log('markerLayer',layer, map);
+    // layer.setGeoJSON(geoJSON)
   };
 
   var baseLayers =
