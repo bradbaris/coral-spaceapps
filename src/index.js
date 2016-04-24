@@ -3,6 +3,7 @@ require('mapbox.js')
 require('mapbox.js/theme/style.css')
 require('initcss/lib/init.css')
 require('./style.css')
+import coral from '../assets/large_coral.png'
 import { MAPBOX_ACCESS_TOKEN } from './config.js'
 import papaparse from 'papaparse';
 import _ from 'lodash';
@@ -85,6 +86,9 @@ ready(() => {
     results.data.shift();
     results.data.pop();
     var geoJSON = [];
+    var icon = {
+      iconUrl: '../assets/large_coral.png'
+    }
     _.forEach(results.data, (result) => {
       var colorSchema = '#2f2000'; // default
       var bleachPer = parseInt(result[17]);
@@ -100,11 +104,12 @@ ready(() => {
       }
       if (result[13] !== undefined && result[14] !== undefined) {
         console.log('result[13], result[14', result[13], result[14]);
-        const leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
-          icon: L.mapbox.marker.icon({
-            'marker-size': 'large',
-            'marker-symbol': 'bus',
-            'marker-color': colorSchema,
+        var leafMarker = L.marker(new L.latLng([result[13], result[14]]), {
+          icon: L.icon({
+            iconUrl: coral,
+            iconSize: [25, 25],
+	          iconAnchor: [5, 0],
+	          popupAnchor: [-5, 0],
           }),
           properties: {
             'liveCoral': result[15],
@@ -112,31 +117,13 @@ ready(() => {
             'bleachedCoral': result[17],
             'paleBleachSum': result[18]
           },
-        });
+        })
         console.log('leafMarker', leafMarker);
+        leafMarker.bindPopup('liveCoral:' + result[15] + '\n' + 'paleCoral:' + result[16] + '\n' + 'bleachedCoral:' + result[17]  + '\n' + 'paleBleachSum:' + result[18]);
         leafMarker.addTo(map);
-        // var temp = {
-        //   "type": "Feature",
-        //   "geometry": {
-        //     "type": "Point",
-        //     "coordinates": [result[13],result[14]],
-        //   },
-        //   "properties": {
-        //     "title": "Hawaii Island Point",
-        //     "description": result[13] + ' ' + result[14],
-        //     "marker-color": colorSchema,
-        //     "marker-size": "large",
-        //     "marker-symbol": "rocket",
-        //   }
-        // }
-        // geoJSON.push(temp);
+
       }
     });
-    // console.log('geoJSON',geoJSON);
-    // //var markerLayer =  L.mapbox.featureLayer().addTo(map)
-    // var layer = L.mapbox.featureLayer().addTo(map);
-    // console.log('markerLayer',layer, map);
-    // layer.setGeoJSON(geoJSON)
   };
 
   var baseLayers =
@@ -247,5 +234,6 @@ ready(() => {
         window.requestAnimationFrame(step);
       }
     }
+    window.requestAnimationFrame(step);
   }
 })
