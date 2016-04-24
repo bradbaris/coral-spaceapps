@@ -33,7 +33,7 @@ module.exports = {
       loader: 'file'
     },{
       test: /\.csv$/,
-      loader: 'raw',
+      loader: 'dsv',
     },
   ]
   },

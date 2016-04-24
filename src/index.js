@@ -1,189 +1,80 @@
 import ready from 'domready'
-require('mapbox.js')
-require('mapbox.js/theme/style.css')
-require('initcss/lib/init.css')
+import data from '../data/coral_bleaching.csv'
 require('./style.css')
-import { MAPBOX_ACCESS_TOKEN } from './config.js'
-
-L.mapbox.accessToken = MAPBOX_ACCESS_TOKEN
-
-const MIN = -4745;
-
 
 ready(() => {
 
-  var cache = {}
-  var today = new Date(new Date() - 1728e5)
-  var day = new Date(today.getTime())
-  var dayParameter = function() {
-    return day.toISOString().split("T")[0]
-  };
+  const map_container = document.querySelector('#data-map')
+  const map = L.map(map_container)
 
-  const map_container = document.querySelector('#map')
-  const map = L.mapbox.map(map_container, 'mapbox.streets-satellite')
-  map.setView([7, -123.5], 6)
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
 
-  var seaSurfaceLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
-    layer: "GHRSST_L4_MUR_Sea_Surface_Temperature",
-    tileMatrixSet: "EPSG4326_1km",
-    time: dayParameter(),
-    tileSize: 512,
-    subdomains: "abc",
-    zIndex: 1,
-    opacity: 1,
-    noWrap: false, // shouldnt this make it wrap-around?
-    continuousWorld: true,
-    bounds: [
-        [-89.9999, -179.9999],
-        [89.9999, 179.9999]
-    ],
-    attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
-}).addTo(map);
+  map.setView([20.622502259344817, -157.6153564453125], 8)
 
-  var landLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png', {
-    layer: "OSM_Land_Mask",
-    tileMatrixSet: "EPSG4326_250m",
-    time: dayParameter(),
-    tileSize: 512,
-    subdomains: "abc",
-    zIndex: 2,
-    opacity: 1.0,
-    noWrap: false, // shouldnt this make it wrap-around?
-    continuousWorld: true,
-    bounds: [
-        [-89.9999, -179.9999],
-        [89.9999, 179.9999]
-    ],
-    attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
-}).addTo(map);
+  data.forEach(result => {
+    var colorSchema = '#2f2000'; // default
+    const {
+      Mean_Total_Live_Coral,
+      CentroidLat,
+      CentroidLon,
+      Data_Source,
+      Mean_Bleached
+    } = result;
 
-  var geoBathyLayer = L.tileLayer('http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpeg', {
-    layer: "BlueMarble_ShadedRelief_Bathymetry",
-    tileMatrixSet: "EPSG4326_500m",
-    time: dayParameter(),
-    tileSize: 512,
-    subdomains: "abc",
-    zIndex: 3,
-    opacity: 1,
-    noWrap: false, // shouldnt this make it wrap-around?
-    continuousWorld: true,
-    bounds: [
-        [-89.9999, -179.9999],
-        [89.9999, 179.9999]
-    ],
-    attribution: '<a href=https://wiki.earthdata.nasa.gov/display/GIBS">NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js">View Source</a>'
-}).addTo(map);
+    var bleachPer = parseInt(result.Mean_Bleached);
+    var markerSet; // will be set using jquery;
+    markerSet = $('.dataSet').val();
 
-  var baseLayers =
-    {
-      'Sea Surface Temperature': seaSurfaceLayer,
-      'Geography/Ocean Depth': geoBathyLayer
-    };
-
-  var controlLayers = L.control.layers(baseLayers).addTo(map);
-
-  // Slider values are in "days from present".
-  const slider = $("#day-slider").slider({
-      value: 0,
-      min: MIN,
-      max: 0,
-      step: 30, // month increment
-      slide: function(event, ui) {
-        // Add the slider value (effectively subracting) to today's
-        // date.
-        var newDay = new Date(today.getTime());
-        newDay.setUTCDate(today.getUTCDate() + ui.value);
-        day = newDay;
-        update();
-      }
-  });
-
-  var update = function() {
-      // Using the day as the cache key, see if the layer is already
-      // in the cache.
-      var key = dayParameter();
-      var layer = cache[key];
-
-      // If not, create a new layer and add it to the cache.
-      if ( !layer ) {
-          layer = createLayer();
-          cache[key] = layer;
-      }
-
-      // There is only one layer in this example, but remove them all
-      // anyway
-      clearLayers();
-
-      // Add the new layer for the selected time
-      map.addLayer(layer);
-
-      // Update the day label
-      $("#day-label").html(dayParameter());
-  };
-
-  var clearLayers = function() {
-      map.eachLayer(function(layer) {
-          map.removeLayer(layer);
-      });
-  };
-
-  var mapIcon = L.divIcon({className: 'mapmarker'});
-  map.on('click', function(e){
-      var marker = new L.marker(e.latlng, {icon: mapIcon}).addTo(map);
-      var popLocation= e.latlng;
-      var popup = L.popup()
-      .setLatLng(popLocation)
-      .setContent('<p class="popup">Enter<br>Coral<br>Bleaching<br>Data<p>')
-      .openOn(map);
-  });
-
-  var mapGroup;
-  var createLayer = function() {
-
-      var layer = L.tileLayer("http://map1{s}.vis.earthdata.nasa.gov/wmts-geo/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png", {
-          layer: "GHRSST_L4_MUR_Sea_Surface_Temperature",
-          tileMatrixSet: "EPSG4326_1km",
-          time: dayParameter(),
-          tileSize: 512,
-          subdomains: "abc",
-          noWrap: false, // <-- hmm, make map wrap around? (hard to center on hawaii at edge)
-          continuousWorld: true,
-          // Prevent Leaflet from retrieving non-existent tiles on the
-          // borders.
-          bounds: [
-              [-89.9999, -179.9999],
-              [89.9999, 179.9999]
-          ],
-          attribution:
-            "<a href='https://wiki.earthdata.nasa.gov/display/GIBS'>" +
-            "NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;" +
-            "<a href='https://github.com/nasa-gibs/web-examples/blob/release/examples/leaflet/time.js'>" +
-            "View Source" +
-            "</a>"
-      });
-      return L.layerGroup([landLayer, layer])
-  };
-
-  update();
-
-    let slider_animation = MIN;
-    let DELAY = 50;
-    let foo = 0;
-
-    function step(timestamp) {
-      if(slider_animation < 0) {
-        if(foo++ % DELAY == 0) {
-          var newDay = new Date(today.getTime());
-          newDay.setUTCDate(today.getUTCDate() + slider_animation);
-          day = newDay;
-          console.log(day)
-          $('#day-slider').slider('value', slider_animation += 14);
-          update()
-        }
-        window.requestAnimationFrame(step);
-      }
+    if (bleachPer < 25 && bleachPer > 10) {
+      colorSchema = 'darkest';
+    } else if(bleachPer < 50 && bleachPer >= 25){
+      colorSchema = 'dark';
+    } else if (bleachPer < 75 && bleachPer >= 50) {
+      colorSchema = 'medium';
+    } else if (bleachPer <= 100 && bleachPer >= 75){
+      colorSchema = 'white';
     }
 
-    window.requestAnimationFrame(step);
+    const size = parseInt(Mean_Total_Live_Coral)
 
-})
+    if (CentroidLat !== undefined && CentroidLon !== undefined) {
+      var iconSize, markSize;
+      if (size > 66) {
+        iconSize = 20
+        markSize = 'large'
+      } else if (size <= 66 && size > 33) {
+        iconSize = 15
+        markSize = 'medium'
+      } else {
+        iconSize = 10
+        markSize = 'small'
+      }
+      // if (Data_Source === markerSet || markerSet === 'all') {
+        const icon = L.divIcon({
+          className: `marker size--${markSize} color--${colorSchema}`,
+          iconSize
+        });
+
+        var leafMarker = L.marker([parseFloat(CentroidLat), parseFloat(CentroidLon)], {
+          icon,
+          properties: {
+            'liveCoral': result.Mean_Total_Live_Coral,
+            'paleCoral': result.Mean_Pale,
+            'bleachedCoral': result.Mean_Bleached,
+            'paleBleachSum': result.Pale_Bleached_Sum
+          }
+        })
+        leafMarker.bindPopup(`Coverage: ${Mean_Total_Live_Coral}% <br/> Bleached: <b> ${Mean_Bleached} %</b>`);
+        leafMarker.on('mouseover', function(e) {
+          this.openPopup();
+        });
+        leafMarker.on('mouseout', function(e) {
+          this.closePopup();
+        });
+        leafMarker.addTo(map)
+      }
+    // }
+  })
+}); // end ready
