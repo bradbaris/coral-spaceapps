@@ -79,12 +79,23 @@ h6 {
     background: #30558c url('../img/blue-coral.jpg') no-repeat top / cover;
 }
 
+.bg-sea {
+    background: #30558c url('../img/bg-sea.jpg') no-repeat center / cover;
+}
+
 .bg-light-gray {
     background-color: #f7f7f7
 }
 
 .bg-darkest-gray {
     background-color: #222
+}
+
+.citation {
+  font-style: italic;
+  max-width: 70%;
+  margin: 3em auto;
+
 }
 
 .btn-primary {
@@ -288,6 +299,12 @@ header {
     text-align: center;
     color: #fff
 }
+
+header.sea {
+  background-image: url(../img/bg-sea.jpg);
+  color: #ffc500;
+}
+
 .overlay {
   background: #5b3737;
   opacity: .5;
