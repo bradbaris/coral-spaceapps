@@ -24,7 +24,7 @@ p {
     padding: 0 20px;
 }
 
-p.right { 
+p.right {
   text-align: right;
   font-size: 16px;
 }
@@ -889,4 +889,7 @@ img::-moz-selection {
 
 body {
     webkit-tap-highlight-color: #fed136
+}
+.credit_desc{
+  color: #fff;  
 }
