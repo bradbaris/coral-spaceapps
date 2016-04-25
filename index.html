@@ -24,9 +24,9 @@
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="lib/jquery-ui-1.10.4/jquery-ui.min.css"/>
     <link rel="stylesheet" href="lib/leaflet-0.7.3/leaflet.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
 
     <script src="lib/jquery-1.11.2/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -80,13 +80,13 @@
                         <a class="page-scroll" href="#video1">Kumulipo</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#SST">Sea Surface</a>
+                        <a class="page-scroll" href="#welcome">Welcome</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#SeaSurfaceTemp">Map</a>
+                        <a class="page-scroll" href="#temperature">Temperature</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#DataMap">Reef Data</a>
+                        <a class="page-scroll" href="#underwater">Underwater</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#video2">Research</a>
@@ -118,11 +118,11 @@
           <div class="embed-responsive embed-responsive-16by9">
             <iframe height="500" src="http://www.youtube.com/embed/P_velUJFSDY?autoplay=1" frameborder="0" allowfullscreen></iframe>
           </div>
-            </div>
+        </div>
     </section>
 
    <!-- SST Intro Section -->
-    <section id="SST" class="bg-yellow">
+    <section id="welcome" class="bg-yellow">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -136,7 +136,7 @@
     </section>
 
     <!-- SST MapSection -->
-    <section id="SeaSurfaceTemp">
+    <section id="temperature">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -157,19 +157,19 @@
     </section>
 
     <!-- Noah Tow Video Section -->
-    <section id="video2" style="background-color: #132e59; padding:0;margin:0;">
-        <div class="container">
-          <div class="embed-responsive embed-responsive-16by9">
-            <video id="videohome" width="100%" preload="auto" autoplay="true" loop="loop" muted="" volume="0">
-                <source src="./img/bleaching-cut-2.mp4" type="video/mp4" />
-            </video>
+    <section id="underwater" style="background-color: #132e59; padding:0;margin:0;">
+      <div class="container">
+        
+        <div class="embed-responsive embed-responsive-16by9">
+                      <iframe src="https://player.vimeo.com/video/164024870?byline=0&portrait=0" width="889" height="500" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
           </div>
         </div>
     </section>
 
     <!-- Data MapSection -->
     <section id="DataMap">
-        <div class="container">
+      <div class="container">
+        <p class="text">Explore NOAA and HIMB survey data from the 2014 and 2015 Events</p>
             <div class="row">
                 <div id="data-map" style="width: 100%; height: 600px">
                   <div class="selector">
@@ -192,8 +192,16 @@
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Research</h2>
                 </div>
+
                 <div class="col-lg-12 text">
-                    <p class="text">Progress to help corals is being made.<br/>
+                  
+                  <p class="text">                <iframe width="640" height="480" src="https://sketchfab.com/models/b412d64c8ebe43f886031e1359278bb9/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe><p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+    <a href="https://sketchfab.com/models/b412d64c8ebe43f886031e1359278bb9?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">West Hawaii Coral Reef</a>
+    by <a href="https://sketchfab.com/johnhrburns?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">John_HR_Burns</a>
+    on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+</p>
+
+                  Progress to help corals is being made.<br/>
 The NASA CORAL project will monitor reefs by remote sensing plane, starting with ground-truthing in Kaneohe Bay June 2016.<br/>
                       The NASA CORAL project will use spectral imagery for reefs in Hawaii, Florida and elsewhere.</br>
                       </br>
@@ -207,7 +215,9 @@ Some corals are able to switch their symbiotic algae to types more resistant to 
 Bleaching and recovery in a marked coral in 2014, and again in 2015.
 
 These cutting-edge projects to grow knowledge to help sustain and manage coral reefs are happening right here in Hawaii!
-                    . </p>
+                      . </p>
+<img src="science.png"></img>
+                  
                 </div>
             </div>
         </div>
