@@ -912,6 +912,9 @@ img::-moz-selection {
 body {
     webkit-tap-highlight-color: #fed136
 }
+.credits_desc{
+  color: #fff;
+} 
 .credit_desc{
-  color: #fff;  
+  color: #fff;
 }
