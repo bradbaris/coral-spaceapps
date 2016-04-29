@@ -32,7 +32,7 @@ ready(() => {
   }
 
   function genMarker(result) {
-    var colorSchema = '#2f2000'; // default
+    var colorSchema = 'darkest'; // default
     const {
       Mean_Total_Live_Coral,
       CentroidLat,
@@ -45,13 +45,13 @@ ready(() => {
     var markerSet; // will be set using jquery;
     markerSet = $('.dataSet').val();
 
-    if (bleachPer < 25 && bleachPer > 10) {
+    if (bleachPer < 25) {
       colorSchema = 'darkest';
-    } else if(bleachPer < 50 && bleachPer >= 25){
+    } else if(bleachPer < 50){
       colorSchema = 'dark';
-    } else if (bleachPer < 75 && bleachPer >= 50) {
+    } else if (bleachPer < 75) {
       colorSchema = 'medium';
-    } else if (bleachPer <= 100 && bleachPer >= 75){
+    } else {
       colorSchema = 'white';
     }
 
