@@ -48,14 +48,20 @@ function onYouTubePlayerAPIReady() {
   });
 }
 
+/*
 $(window).scroll(function() {
   $("iframe").each( function() {
       if( $(window).scrollTop() > $(this).offset().top - 200 ) {
           $(this).css('opacity',1);
-          player.playVideo();
+        if(player) {
+          //player.playVideo();
+        }
       } else {
-          $(this).css('opacity',0);
-          player.stopVideo();
+        $(this).css('opacity',0);
+        if(player){
+          //player.stopVideo();
+        }
       }
   }); 
 });
+*/
