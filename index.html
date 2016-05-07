@@ -15,69 +15,37 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:label1" value="2016 NASA Space Apps Entry">
     <meta name="twitter:data1" value="https://2016.spaceappschallenge.org/challenges/earth/earth-live/projects/coral-beat">
-    
     <meta name="twitter:label2" value="Awards">
     <meta name="twitter:data2" value="Winner Best Overall Honolulu Challenge">
-
-
     <title>Coral Beat</title>
-
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="css/agency.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" href="lib/jquery-ui-1.10.4/jquery-ui.min.css"/>
-    <link rel="stylesheet" href="lib/leaflet-0.7.3/leaflet.css"/>
+    <link rel="stylesheet" href="lib/jquery-ui-1.10.4/jquery-ui.min.css" />
+    <link rel="stylesheet" href="lib/leaflet-0.7.3/leaflet.css" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
-
     <script src="lib/jquery-1.11.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="lib/proj4js-2.3.3/proj4.js"></script>
     <script src="lib/leaflet-0.7.3/leaflet.js"></script>
     <script src="lib/proj4leaflet-0.7.0/proj4leaflet.js"></script>
     <script src="lib/map1.js"></script>
-
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script type="text/javascript">
-      setTimeout( function() {
-      $('html, body').animate({ scrollTop: $('#kumulipo').offset().top-75 }, 'slow');
-      }, 7000);
-    </script>
-    <style>
-      #sstmap {
-      height: 500px;
-      }
-    </style>
-
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-77128878-1', 'auto');
-      ga('send', 'pageview');
-
-    </script>
 </head>
 
 <body id="page-top" class="index">
-
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -91,7 +59,6 @@
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">Coral Beat</a>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -113,18 +80,15 @@
                     <li>
                         <a class="page-scroll" href="#servery">Survey</a>
                     </li>
-
                     <li>
                         <a class="page-scroll" href="#research">Research</a>
                     </li>
-
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
-
     <!-- Header -->
     <header>
         <div class="container">
@@ -137,25 +101,75 @@
             </div>
         </div>
     </header>
-
     <!-- Kumulipo Video Section -->
-    <section id="kumulipo" style="background-color: #132e59; padding:0;margin:0;">
+    <section id="kumulipo" style="background-color: #000; padding:0; margin:0;">
         <div class="container">
-          <div class="embed-responsive embed-responsive-16by9">
-            <iframe height="500" src="http://www.youtube.com/embed/P_velUJFSDY?autoplay=1" frameborder="0" allowfullscreen></iframe>
-          </div>
+            <div class="embed-responsive embed-responsive-16by9">
+                <!--             <iframe height="500" src="http://www.youtube.com/embed/P_velUJFSDY?autoplay=1" frameborder="0" allowfullscreen></iframe> -->
+                <div id="player"></div>
+                <script>
+                // 2. This code loads the IFrame Player API code asynchronously.
+                var tag = document.createElement('script');
+
+                tag.src = "https://www.youtube.com/iframe_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                // 3. This function creates an <iframe> (and YouTube player)
+                //    after the API code downloads.
+                var player;
+
+                function onYouTubeIframeAPIReady() {
+                    player = new YT.Player('player', {
+                        // height: '500',
+                        width: '800',
+                        playerVars: {
+                            autoplay: 1,
+                            autohide: 1,
+                            mute: 1,
+                            loop: 0,
+                            controls: 1,
+                            showinfo: 0,
+                            modestbranding: 1,
+                            vq: 'hd720'
+                        },
+                        videoId: 'P_velUJFSDY',
+                        events: {
+                            'onReady': onPlayerReady,
+                            'onStateChange': onPlayerStateChange
+                        }
+                    });
+                    player.mute();
+                }
+
+                // 4. The API will call this function when the video player is ready.
+                function onPlayerReady(event) {
+                    event.target.playVideo();
+                    player.mute();
+                }
+
+                var done = false;
+
+                function onPlayerStateChange(event) {
+
+                }
+
+                function stopVideo() {
+                    player.stopVideo();
+                }
+                </script>
+            </div>
         </div>
     </section>
-
-   <!-- SST Intro Section -->
+    <!-- SST Intro Section -->
     <section id="welcome" class="bg-yellow">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                  <h2 class="section-heading">Welcome to Coral Beat</h2>
+                    <h2 class="section-heading">Welcome to Coral Beat</h2>
                 </div>
                 <div class="col-lg-12 text">
-                  <p class="text">The coral reefs are sending us a message. Higher temperatures are stressing the corals, causing them to bleach or turn white. Bleaching happens when corals lose the tiny algae that live in and feed the corals. Stressed corals that survive bleaching then begin to starve. Coral reefs play an integral role in the health of our ocean ecosystem. They are home to millions of marine species, directly influence Hawaii’s tourism economy, and protect our shores. We offer this resource for local residents, visitors, and the science community to learn about and help track the effects of bleaching.</p>
+                    <p class="text">The coral reefs are sending us a message. Higher temperatures are stressing the corals, causing them to bleach or turn white. Bleaching happens when corals lose the tiny algae that live in and feed the corals. Stressed corals that survive bleaching then begin to starve. Coral reefs play an integral role in the health of our ocean ecosystem. They are home to millions of marine species, directly influence Hawaii’s tourism economy, and protect our shores. We offer this resource for local residents, visitors, and the science community to learn about and help track the effects of bleaching.</p>
                 </div>
             </div>
         </div>
@@ -185,11 +199,10 @@
     <!-- Noah Tow Video Section -->
     <section id="underwater" style="background-color: #132e59; padding:0;margin:0;">
       <div class="container">
-
         <div class="embed-responsive embed-responsive-16by9">
-                      <iframe src="https://player.vimeo.com/video/164024870?byline=0&portrait=0" width="889" height="500" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-          </div>
+          <iframe src="https://player.vimeo.com/video/164024870?byline=0&portrait=0" width="889" height="500" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
+      </div>
     </section>
 
     <!-- Data MapSection -->
@@ -219,34 +232,33 @@
                     <h2 class="section-heading">Research</h2>
                 </div>
 
-                <div class="col-lg-12 text">
+                <div class="col-lg-12 text-center">
+                    <iframe width="640" height="480" src="https://sketchfab.com/models/b412d64c8ebe43f886031e1359278bb9/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
 
-                  <p class="text">                <iframe width="640" height="480" src="https://sketchfab.com/models/b412d64c8ebe43f886031e1359278bb9/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe><p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
-    <a href="https://sketchfab.com/models/b412d64c8ebe43f886031e1359278bb9?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">West Hawaii Coral Reef</a>
-    by <a href="https://sketchfab.com/johnhrburns?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">John_HR_Burns</a>
-    on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
-</p>
-
-                  Progress to help corals is being made.<br/>
-The NASA CORAL project will monitor reefs by remote sensing plane, starting with ground-truthing in Kaneohe Bay June 2016.<br/>
-                      The NASA CORAL project will use spectral imagery for reefs in Hawaii, Florida and elsewhere.</br>
-                      </br>
-New imaging techniques such as imaging with drones and 3D reconstruction help monitor and sample reefs in detail.
-This high-resolution reef imagery was collected with a drone. 3D reconstructions of the reef give unprecedented information about surfaces, habitat, and form.
-
-Work to find, grow, and outplant corals more resilient to ocean acidification and bleaching has begun.
-This work involves intensive lab and field work in Hawaii and Australia.
-
-Some corals are able to switch their symbiotic algae to types more resistant to bleaching – a very recent discovery. These corals are doing all they can to adapt.
-Bleaching and recovery in a marked coral in 2014, and again in 2015.
-
-These cutting-edge projects to grow knowledge to help sustain and manage coral reefs are happening right here in Hawaii!
-                      . </p>
-                  <p>
-
-                    <img src="science.png" style="width:80%;"></img>
-                  </p>
-
+                    <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+                        <a href="https://sketchfab.com/models/b412d64c8ebe43f886031e1359278bb9?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">West Hawaii Coral Reef</a>
+                        by                  
+                        <a href="https://sketchfab.com/johnhrburns?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">John_HR_Burns</a>
+                        on 
+                        <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+                    </p>
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="row">
+                <div class="col-lg-6 text">
+                    <h3 class="section-heading text-center">Progress to help corals<br /> is being made:</h3><br>
+                    <ul class="col-6-list">
+                        <li>The NASA CORAL project will monitor reefs by remote sensing plane, starting with ground-truthing in Kaneohe Bay June 2016.</li>
+                        <li>The NASA CORAL project will use spectral imagery for reefs in Hawaii, Florida and elsewhere.</li>
+                        <li>New imaging techniques such as imaging with drones and 3D reconstruction help monitor and sample reefs in detail. This high-resolution reef imagery is collected with a drone, whils 3D reconstructions of the reef give unprecedented information about surfaces, habitat, and form.</li>
+                        <li>Work to find, grow, and outplant corals more resilient to ocean acidification and bleaching has begun. This work involves intensive lab and field work in Hawaii and Australia.</li>
+                        <li>Some corals are able to switch their symbiotic algae to types more resistant to bleaching— a very recent discovery. These corals are doing all they can to adapt.</li>
+                        <li>These cutting-edge projects to grow knowledge to help sustain and manage coral reefs are happening right here in Hawaii!</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <img src="assets/science_crop.jpg">
                 </div>
             </div>
         </div>
@@ -273,6 +285,17 @@ These cutting-edge projects to grow knowledge to help sustain and manage coral r
             </div>
         </div>
     </nav>
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-77128878-1', 'auto');
+      ga('send', 'pageview');
+    </script>
 
     <!-- Youtube Video -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

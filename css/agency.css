@@ -3,6 +3,31 @@ body {
     font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
+#sstmap {
+    height: 500px;
+}
+
+.spacer {
+    height: 100px;
+}
+
+ul {
+    list-style: none;
+}
+
+#resources li, li {
+    font-size: 18px;
+    line-height: 2;
+    padding: 0 20px;
+}
+
+ul.col-6-list li {
+    font-size: 15px;
+    list-style-type: disc;
+    padding-bottom: 20px;
+
+}
+
 .text-muted {
     color: #777
 }
@@ -65,6 +90,11 @@ h6 {
 
 .img-centered {
     margin: 0 auto
+}
+
+.ytp-player-content {
+    text-align: center;
+    margin: 0 auto;
 }
 
 .yellow {
